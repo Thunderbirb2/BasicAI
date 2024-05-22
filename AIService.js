@@ -20,24 +20,31 @@ const generateResponseGeminiVersion = async (message) => {
 
 //reaches chatGPT's AI
 const generateResponseChatGPTversion = async (message) => {
-    //API_KEY required (they are not free)
-    return fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + API_KEY
-        },
-        body: JSON.stringify({
-            "prompt": message,
-            "model": "gpt-3.5-turbo",
-        })
-    }).then(
-        (response) => response.json()
-    ).then(
-        (data) => {
-            return data;
+    try {
+        const response = await fetch("https://api.openai.com/v1/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${API_KEY}`
+            },
+            body: JSON.stringify({
+                model: "gpt-3.5-turbo",
+                prompt: message,
+                max_tokens: 150
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Error ${response.status}: ${errorData.error.message}`);
         }
-    );
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        return error.message;
+    }
 };
 
 //converts texts into a google seach url
