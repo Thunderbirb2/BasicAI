@@ -1,6 +1,6 @@
 import * as GoogleGenerativeAI from "@google/generative-ai";
 
-const API_KEY="AIzaSyD_zhx-5oWMA-1Y_SjuehItCc5EULeAxyY"
+const API_KEY=""
 
 //this functions is here to make it easier to switch AIs. 
 export const getResponse = async (message) => {
